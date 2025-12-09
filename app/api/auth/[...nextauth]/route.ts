@@ -10,8 +10,21 @@ export const authOptions: NextAuthOptions = {
         clientSecret: process.env.GOOGLE_CLIENT_SECRET!
     }),
   ],
-  session: {
-    strategy: "jwt", // Recommended for App Router
+  session: { strategy: "jwt" },
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) token.user = user;
+      return token;
+    },
+    async session({ session, token }) {
+      session.user = token.user as {
+        id: string;
+        name: string | null;
+        email: string;
+        image: string | null;
+      };
+      return session;
+    },
   },
 };
 
