@@ -20,11 +20,12 @@ export async function POST(req: Request) {
   }
 
   await getDbClient().insert(users).values({
-    id: crypto.randomUUID(),
-    email: body.email,
-    password: hashed,
-    name: body.name
-  });
+  id: crypto.randomUUID(),
+  email: body.email,
+  password: hashed,
+  name: null,
+  image: null,        // ✔ FIXED — actual value, not column reference
+});
 
   return new Response(JSON.stringify({ success: true }));
 }

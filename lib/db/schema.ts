@@ -1,39 +1,40 @@
-import { pgTable, boolean,  text, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, integer, boolean,  text, timestamp } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
-  id: text("id").primaryKey(),       // NextAuth provider user id
+  id: text("id").primaryKey(),
   name: text("name"),
-  email: text("email").notNull().unique(),
+  email: text("email").notNull(),
+  password: text("password"),
+  emailVerified: timestamp("emailVerified", { mode: "date" }),
   image: text("image"),
-  password: text("password").notNull(),
-  createdAt: timestamp("created_at").defaultNow(),
 });
 
 export const accounts = pgTable("accounts", {
   id: text("id").primaryKey(),
-  userId: text("user_id").notNull(),
+  userId: text("userId")
+    .notNull()
+    .references(() => users.id),
   type: text("type").notNull(),
   provider: text("provider").notNull(),
-  providerAccountId: text("provider_account_id").notNull(),
-
-  accessToken: text("access_token"),
-  refreshToken: text("refresh_token"),
-  idToken: text("id_token"),
+  providerAccountId: text("providerAccountId").notNull(),
+  refresh_token: text("refresh_token"),
+  access_token: text("access_token"),
+  expires_at: integer("expires_at"),
+  token_type: text("token_type"),
   scope: text("scope"),
-  tokenType: text("token_type"),
-  expiresAt: timestamp("expires_at"),
+  id_token: text("id_token"),
+  session_state: text("session_state"),
 });
 
 export const sessions = pgTable("sessions", {
-  sessionToken: text("session_token").primaryKey(),
-  userId: text("user_id").notNull(),
-  expires: timestamp("expires"),
+  sessionToken: text("sessionToken").primaryKey(),
+  userId: text("userId").notNull().references(() => users.id),
+  expires: timestamp("expires").notNull(),
 });
 
-export const verificationTokens = pgTable("verification_tokens", {
-  id: text("id").primaryKey(),
+export const verificationTokens = pgTable("verificationTokens", {
   identifier: text("identifier").notNull(),
-  token: text("token").notNull(),
+  token: text("token").primaryKey(),
   expires: timestamp("expires").notNull(),
 });
 
