@@ -1,9 +1,12 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import type { NextAuthOptions } from "next-auth";
+import { DrizzleAdapter } from "@auth/drizzle-adapter";
+import { getDbClient } from "@/lib/db";
 
 console.log(process.env.GOOGLE_CLIENT_ID!, process.env.GOOGLE_CLIENT_SECRET!);
 export const authOptions: NextAuthOptions = {
+adapter: DrizzleAdapter(getDbClient()),
   providers: [
     GoogleProvider({
         clientId: process.env.GOOGLE_CLIENT_ID!,
