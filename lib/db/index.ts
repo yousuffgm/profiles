@@ -1,9 +1,20 @@
 import { neon } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
-import * as schema from "./schema"
+import * as schema from "./schema";
 
-export const getDbClient = () => {
-    const isProd = process.env.NODE_ENV === "production";
-    const client = neon(isProd? process.env.PROD_DATABASE_URL!:process.env.DEV_DATABASE_URL!);
-    return drizzle(client, { schema });
-};
+export function getDbClient() {
+  const url =
+    process.env.DATABASE_URL ||
+    process.env.PROD_DATABASE_URL ||
+    process.env.DEV_DATABASE_URL;
+
+  if (!url) {
+    throw new Error("❌ DATABASE_URL is missing.");
+  }
+
+  // Create neon client lazily
+  const sql = neon(url);
+
+  // Return drizzle instance
+  return drizzle(sql, { schema });
+}
