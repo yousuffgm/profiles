@@ -1,19 +1,12 @@
 {
-  "version": "5",
+  "version": 1,
   "dialect": "postgresql",
   "entries": [
     {
       "idx": 0,
       "version": "7",
-      "when": 1765242157076,
-      "tag": "0000_tranquil_mongu",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1765251624481,
-      "tag": "0001_thankful_tattoo",
+      "when": 1765299635775,
+      "tag": "0000_round_lord_hawal",
       "breakpoints": true
     }
   ]
