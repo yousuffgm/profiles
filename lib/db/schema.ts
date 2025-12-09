@@ -5,7 +5,36 @@ export const users = pgTable("users", {
   name: text("name"),
   email: text("email").notNull().unique(),
   image: text("image"),
+  password: text("password").notNull(),
   createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const accounts = pgTable("accounts", {
+  id: text("id").primaryKey(),
+  userId: text("user_id").notNull(),
+  type: text("type").notNull(),
+  provider: text("provider").notNull(),
+  providerAccountId: text("provider_account_id").notNull(),
+
+  accessToken: text("access_token"),
+  refreshToken: text("refresh_token"),
+  idToken: text("id_token"),
+  scope: text("scope"),
+  tokenType: text("token_type"),
+  expiresAt: timestamp("expires_at"),
+});
+
+export const sessions = pgTable("sessions", {
+  sessionToken: text("session_token").primaryKey(),
+  userId: text("user_id").notNull(),
+  expires: timestamp("expires"),
+});
+
+export const verificationTokens = pgTable("verification_tokens", {
+  id: text("id").primaryKey(),
+  identifier: text("identifier").notNull(),
+  token: text("token").notNull(),
+  expires: timestamp("expires").notNull(),
 });
 
 export const profiles = pgTable("profiles", {
