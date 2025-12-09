@@ -7,7 +7,7 @@ export function getDbClient() {
     process.env.DATABASE_URL ||
     process.env.PROD_DATABASE_URL ||
     process.env.DEV_DATABASE_URL;
-
+    console.log("Database URL:", url);
   if (!url) {
     throw new Error("❌ DATABASE_URL is missing.");
   }
